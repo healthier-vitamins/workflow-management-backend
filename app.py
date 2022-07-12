@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
+from flask_migrate import Migrate
 from models import User_Accounts, Job_Positions
 import os
 
@@ -10,6 +10,14 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = os.environ['SECRET_KEY']
 
 db = SQLAlchemy(app)
+# setup for migration
+migrate = Migrate(app, db)
+
+## flask db init
+def create_app():
+    db.init_app(app)
+    migrate.init_app(app, db)
+    return app
 
 @app.route("/")
 def index():
