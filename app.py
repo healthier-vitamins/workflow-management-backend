@@ -16,7 +16,10 @@ def index():
     print(type(app))
     return "hello"
 
-# @app.route("/")
+@app.route("/create-new-user", methods=['POST'])
+def addNewUser():
+    return "sup"
+
 
 # engine = create_engine(os.environ['DATABASE_URL'], echo=True, future=True)
 
