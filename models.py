@@ -51,6 +51,8 @@ class Job_Positions(Base):
 # holds the session
 # echo: SQL emitted connections will be logged as standard out.
 # future: ensure using SQLAlchemy 2.0 style APIs.
-engine = create_engine(os.environ['DATABASE_URL'], echo=True, future=True)
+
+### engine = create_engine(os.environ['DATABASE_URL'], echo=True, future=True)
+
 # initialise the tables
-Base.metadata.create_all(engine)
+### Base.metadata.create_all(engine)
