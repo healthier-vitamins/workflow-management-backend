@@ -1,1 +1,1 @@
-web: gunicorn app:workflow_management
+web: gunicorn app:app_inner
