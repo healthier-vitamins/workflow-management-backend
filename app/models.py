@@ -6,7 +6,7 @@
 
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
-from app_inner import db
+from app import db
 
 class User_Accounts(db.Model):
     __tablename__ = "user_accounts"
