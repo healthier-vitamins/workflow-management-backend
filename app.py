@@ -1,5 +1,7 @@
-from flask import Flask, jsonify, request, flash
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from models import User_Accounts, Job_Positions
 import os
 
 app = Flask(__name__)
@@ -13,3 +15,11 @@ db = SQLAlchemy(app)
 def index():
     print(type(app))
     return "hello"
+
+# @app.route("/")
+
+# engine = create_engine(os.environ['DATABASE_URL'], echo=True, future=True)
+
+if __name__ == '__main__':
+    # db.create_all(engine)
+    app.run(debug=True)
