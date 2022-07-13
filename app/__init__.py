@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 app_inner = Flask(__name__)
+CORS(app_inner)
 app_inner.config.from_object(Config)
 db = SQLAlchemy(app_inner)
 migrate = Migrate(app_inner, db)
