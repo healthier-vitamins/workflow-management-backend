@@ -1,6 +1,5 @@
-from audioop import cross
 from app import app_inner, db
-from app.models import User_Accounts, Stocks
+from app.models import User_Accounts, Stock_List
 from flask import request, jsonify
 from flask_cors import cross_origin
 
@@ -12,17 +11,15 @@ def index():
 @cross_origin()
 def createNewUser():
     # print("request: ", request.get_json()['first_name'])
-
     x = request.get_json()
     sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], username=x["username"], password_hash=x["password_hash"], job_position=x['job_position'])
-
     db.session.add(sql_temp)
     db.session.commit()
     return x
 
 @app_inner.route('/show-stocks', methods=['GET'])
 def showStocks():
-    stocks = Stocks.query.all()
+    stocks = Stock_List.query.all()
     print(stocks)
     stocks_dict = {}
     for i in stocks:

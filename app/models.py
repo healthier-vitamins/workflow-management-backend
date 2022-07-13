@@ -15,40 +15,35 @@ class User_Accounts(db.Model):
     email = db.Column(db.String(120), nullable=False)
     username = db.Column(db.String(35), nullable=False, unique=True)
     password_hash = db.Column(db.String(35), nullable=False)
-    job_position = db.Column(db.String(35), nullable=False)
+    job_position = db.Column(db.String(35))
     is_deleted = db.Column(db.Boolean, default=False, unique=False)
     current_workflow = db.Column(db.String(35))
 
-    # def __init__(self, id, first_name, last_name, email, username, password, job_positions, is_deleted):
-    #     self.id = id
-    #     self.first_name = first_name
-    #     self.last_name = last_name
-    #     self.email = email
-    #     self.username = username
-    #     self.password = password
-    #     self.job_positions = job_positions
-    #     self.is_deleted = is_deleted
-    
-    # represent classes
     def __repr__(self):
         return f"User_Accounts(id={self.id!r}, username={self.username!r}"
 
-class Stocks(db.Model):
-    __tablename__ = "stocks"
+class Stock_List(db.Model):
+    __tablename__ = "stock_list"
 
     id = db.Column(db.Integer, primary_key=True)
     item = db.Column(db.String(40))
 
     def __repr__(self):
-        return f"Stocks(id={self.id!r}, item={self.item!r}"
+        return f"Stock_List(id={self.id!r}, item={self.item!r}"
     
 
 # class Projects(db.Model):
 #     __tablename__ = "projects"
 
 #     id = db.Column(db.Integer, primary_key=True)
+#     items = db.Column(db.String(50))
+#     service = db.Column(db.String(50))
 #     customer_company = db.Column(db.String(50))
 #     customer_poc_name = db.Column(db.String(50))
+
+#     def __repr__(self):
+#         return f"Projects(id={self.id!r}, customer_company={self.customer_company!r}"
+    
 
 
 # holds the session
