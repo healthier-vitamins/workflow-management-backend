@@ -2,7 +2,7 @@ from audioop import cross
 from app import app_inner, db
 from app.models import User_Accounts, Stocks
 from flask import request, jsonify
-
+from flask_cors import cross_origin
 
 @app_inner.route('/')
 def index():
