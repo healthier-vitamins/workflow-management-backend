@@ -4,8 +4,6 @@
 # if a database is initialised, Base shall hold it
 # Base = declarative_base()
 
-from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
 from app import db
 
 class User_Accounts(db.Model):
@@ -16,8 +14,8 @@ class User_Accounts(db.Model):
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     username = db.Column(db.String(35), nullable=False)
-    password = db.Column(db.String(35), nullable=False)
-    job_positions = relationship('Job_Positions', back_populates="user_account")
+    password_hash = db.Column(db.String(35), nullable=False)
+    job_position = db.relationship('Job_Positions', back_populates="user_account")
     is_deleted = db.Column(db.Boolean, default=False, unique=False)
 
     # def __init__(self, id, first_name, last_name, email, username, password, job_positions, is_deleted):
@@ -40,8 +38,8 @@ class Job_Positions(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     position = db.Column(db.String(35), nullable=False)
-    user_account_id = db.Column(db.Integer, ForeignKey("user_accounts.id"))
-    user_account = relationship('User_Accounts', back_populates="job_positions")
+    user_account_id = db.Column(db.Integer, db.ForeignKey("user_accounts.id"))
+    user_account = db.relationship('User_Accounts', back_populates="job_position")
 
     # def __init__(self, id, position, user_account_id, user_account):
     #     self.id = id
