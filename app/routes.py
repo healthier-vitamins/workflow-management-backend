@@ -23,10 +23,13 @@ def createNewUser():
 @app_inner.route('/show-stock-list', methods=['GET'])
 def showStocks():
     stocks = Stock_List.query.all()
-    stocks_dict = {}
-    for i in stocks:
-        stocks_dict[i.id] = i.item
-    return jsonify(stocks_dict)
+    stocks_arr = []
+    for i in range(len(stocks)):
+        stock_item = {}
+        stock_item['id'] = stocks[i].id
+        stock_item['item'] = stocks[i].item
+        stocks_arr.append(stock_item)
+    return jsonify(stocks_arr)
 
 @app_inner.route('/update-user/<user_id>', methods=['PUT'])
 def updateAcc(user_id):
