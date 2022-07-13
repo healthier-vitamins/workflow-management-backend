@@ -8,8 +8,8 @@ from flask import request, jsonify
 def index():
     return "hello"
 
-@cross_origin()
 @app_inner.route('/create-new-user', methods=['POST'])
+@cross_origin()
 def createNewUser():
     # print("request: ", request.get_json()['first_name'])
 
