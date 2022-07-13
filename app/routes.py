@@ -20,13 +20,13 @@ def createNewUser():
     db.session.commit()
     return x
 
-@app_inner.route('/show-stocks', methods=['GET'])
+@app_inner.route('/show-stock-list', methods=['GET'])
 def showStocks():
     stocks = Stock_List.query.all()
     stocks_dict = {}
     for i in stocks:
         stocks_dict[i.id] = i.item
-    return stocks_dict
+    return jsonify(stocks_dict)
 
 @app_inner.route('/update-user/<user_id>', methods=['PUT'])
 def updateAcc(user_id):
