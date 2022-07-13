@@ -10,9 +10,12 @@ def index():
 @app_inner.route('/create-new-user', methods=['POST'])
 @cross_origin()
 def createNewUser():
-    # print("request: ", request.get_json()['first_name'])
+
     x = request.get_json()
-    sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], username=x["username"], password_hash=x["password_hash"], job_position=x['job_position'])
+    # run hash method
+    password_hashed = x["password"]
+
+    sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], password_hash=password_hashed)
     db.session.add(sql_temp)
     db.session.commit()
     return x
@@ -20,7 +23,6 @@ def createNewUser():
 @app_inner.route('/show-stocks', methods=['GET'])
 def showStocks():
     stocks = Stock_List.query.all()
-    print(stocks)
     stocks_dict = {}
     for i in stocks:
         stocks_dict[i.id] = i.item
@@ -33,7 +35,7 @@ def updateAcc(user_id):
     account_to_edit.first_name = x["first_name"]
     account_to_edit.last_name = x["last_name"]
     account_to_edit.email = x["email"]
-    account_to_edit.username = x["username"]
+    account_to_edit.job_position = x["job_position"]
     account_to_edit.current_workflow = x["current_workflow"]
     db.session.commit()
     return x

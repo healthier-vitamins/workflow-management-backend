@@ -13,11 +13,11 @@ class User_Accounts(db.Model):
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), nullable=False)
-    username = db.Column(db.String(35), nullable=False, unique=True)
     password_hash = db.Column(db.String(35), nullable=False)
     job_position = db.Column(db.String(35))
-    is_deleted = db.Column(db.Boolean, default=False, unique=False)
     current_workflow = db.Column(db.String(35))
+    is_admin = db.Column(db.Boolean, default=False, unique=False)
+    is_deleted = db.Column(db.Boolean, default=False, unique=False)
 
     def __repr__(self):
         return f"User_Accounts(id={self.id!r}, username={self.username!r}"
@@ -45,7 +45,7 @@ class Stock_List(db.Model):
 #         return f"Projects(id={self.id!r}, customer_company={self.customer_company!r}"
     
 
-
+########################################################################
 # holds the session
 # echo: SQL emitted connections will be logged as standard out.
 # future: ensure using SQLAlchemy 2.0 style APIs.
