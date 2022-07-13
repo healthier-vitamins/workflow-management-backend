@@ -1,3 +1,4 @@
+from audioop import cross
 from app import app_inner, db
 from app.models import User_Accounts, Stocks
 from flask import request, jsonify
@@ -6,6 +7,8 @@ from flask import request, jsonify
 @app_inner.route('/')
 def index():
     return "hello"
+
+@cross_origin()
 @app_inner.route('/create-new-user', methods=['POST'])
 def createNewUser():
     # print("request: ", request.get_json()['first_name'])
