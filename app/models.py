@@ -13,10 +13,11 @@ class User_Accounts(db.Model):
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), nullable=False)
-    username = db.Column(db.String(35), nullable=False)
+    username = db.Column(db.String(35), nullable=False, unique=True)
     password_hash = db.Column(db.String(35), nullable=False)
-    job_position = db.relationship('Job_Positions', back_populates="user_account")
+    job_position = db.Column(db.String(35), nullable=False)
     is_deleted = db.Column(db.Boolean, default=False, unique=False)
+    current_workflow = db.Column(db.String(35))
 
     # def __init__(self, id, first_name, last_name, email, username, password, job_positions, is_deleted):
     #     self.id = id
@@ -30,25 +31,25 @@ class User_Accounts(db.Model):
     
     # represent classes
     def __repr__(self):
-        return f"User_Accounts(id={self.id!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, email={self.email!r}, username={self.username!r}, password={self.password!r}, job_positions={self.job_positions!r}, is_deleted={self.is_deleted!r},)"
- 
+        return f"User_Accounts(id={self.id!r}, username={self.username!r}"
 
-class Job_Positions(db.Model):
-    __tablename__ = "job_positions"
+class Stocks(db.Model):
+    __tablename__ = "stocks"
 
     id = db.Column(db.Integer, primary_key=True)
-    position = db.Column(db.String(35), nullable=False)
-    user_account_id = db.Column(db.Integer, db.ForeignKey("user_accounts.id"))
-    user_account = db.relationship('User_Accounts', back_populates="job_position")
+    item = db.Column(db.String(40))
 
-    # def __init__(self, id, position, user_account_id, user_account):
-    #     self.id = id
-    #     self.position = position
-    #     self.user_account_id = user_account_id
-    #     self.user_account = user_account
-    
     def __repr__(self):
-        return f"Job_Positions(id={self.id!r}, position={self.position!r}, user_account_id={self.user_account_id!r}, user_account={self.user_account!r},"
+        return f"Stocks(id={self.id!r}, item={self.item!r}"
+    
+
+# class Projects(db.Model):
+#     __tablename__ = "projects"
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     customer_company = db.Column(db.String(50))
+#     customer_poc_name = db.Column(db.String(50))
+
 
 # holds the session
 # echo: SQL emitted connections will be logged as standard out.
