@@ -1,25 +1,30 @@
-# from sqlalchemy import db.Boolean, Column, db.Integer, db.String, ForeignKey, create_engine
-# from sqlalchemy.orm import declarative_base, relationship
+'''populating database without migrate, only sqlalchemy'''
+#! from sqlalchemy import db.Boolean, Column, db.Integer, db.String, ForeignKey, create_engine
+#! from sqlalchemy.orm import declarative_base, relationship
 
 # if a database is initialised, Base shall hold it
-# Base = declarative_base()
+#! Base = declarative_base()
+''''''
 
-from email.policy import default
 from app import db, login
 # hashing of password
 from werkzeug.security import generate_password_hash, check_password_hash
+'''flask-wtf sign'''
 # allows methods/implementations for easier use
-from flask_login import UserMixin
+#! from flask_login import UserMixin
+''''''
 
+'''flask-wtf sigh'''
 # to aid flask-login with navigating databases.
 # login initialised in __init__.py.
 # id passed through is string, therefore, casted.
-@login.user_loader
-def load_user(id):
-    return User_Accounts.query.get(int(id))
+#! @login.user_loader
+#! def load_user(id):
+#!     return User_Accounts.query.get(int(id))
+''''''
 
 # UserMixin adds, User_Accounts.is_authenticated/.is_active/.is_anonymous/.get_id
-class User_Accounts(UserMixin, db.Model):
+class User_Accounts(db.Model):
     __tablename__ = "user_accounts"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -64,12 +69,13 @@ class Stock_List(db.Model):
 #         return f"Projects(id={self.id!r}, customer_company={self.customer_company!r}"
     
 
-########################################################################
+'''populating database without migrate, only sqlalchemy'''
 # holds the session
 # echo: SQL emitted connections will be logged as standard out.
 # future: ensure using SQLAlchemy 2.0 style APIs.
 
-# engine = create_engine(os.environ['DATABASE_URL'], echo=True, future=True)
+#! engine = create_engine(os.environ['DATABASE_URL'], echo=True, future=True)
 
 # initialise the tables
 # Base.metadata.create_all(engine)
+''''''
