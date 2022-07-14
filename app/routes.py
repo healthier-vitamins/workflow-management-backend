@@ -24,12 +24,15 @@ def createNewUser():
     set.set_password(password=x['password'])
 
     sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], password_hash=set.password_hash)
-    db.session.add(sql_temp)
-    db.session.commit()
-    print(sql_temp)
-    user_credents = vars(sql_temp)
-    user_credents.pop("_sa_instance_state")
-    return jsonify(user_credents)
+    try:
+        db.session.add(sql_temp)
+        db.session.commit()
+        # print(sql_temp)
+        user_credents = vars(sql_temp)
+        user_credents.pop("_sa_instance_state")
+        return jsonify(user_credents)
+    except:
+        return {"status": "Email taken"}
 
 @app_inner.route('/show-stock-list', methods=['GET'])
 def showStocks():
@@ -39,6 +42,7 @@ def showStocks():
         stock_item = {}
         stock_item['id'] = stocks[i].id
         stock_item['item'] = stocks[i].item
+        stock_item['quantity'] = stocks[i].quantity
         stocks_arr.append(stock_item)
     return jsonify(stocks_arr)
 
@@ -91,7 +95,20 @@ def loginValidation():
     #     return "logged in"
     # return "log in again noob"
     ''''''
+
+@app_inner.route('/delete-user/<user_id>', methods=['DELETE'])
+def deleteUser(user_id):
+    account_to_delete = User_Accounts.query.get(user_id).first()
+    if account_to_delete:
+        db.session.delete(account_to_delete)
+        db.session.commit()
+        return {"status": "deleted"}
+    else:
+        return {"status": "acc not found"}
     
+
+
+
 
 '''to-do list'''
 # create stock POST
