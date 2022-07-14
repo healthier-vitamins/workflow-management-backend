@@ -4,10 +4,11 @@ from app.models import User_Accounts, Stock_List
 from flask import request, jsonify
 from flask_cors import cross_origin
 
-#! flask-wtf sigh
-# from app.login_form import LoginForm
-# from flask_login import current_user, login_user
-# from werkzeug.datastructures import CombinedMultiDict
+'''flask-wtf sigh'''
+#! from app.login_form import LoginForm
+#! from flask_login import current_user, login_user
+#! from werkzeug.datastructures import CombinedMultiDict
+''''''
 
 @app_inner.route('/')
 def index():
@@ -19,9 +20,10 @@ def createNewUser():
 
     x = request.get_json()
     # run hash method
-    password_hashed = x["password"]
+    set = User_Accounts()
+    set.set_password(password=x['password'])
 
-    sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], password_hash=password_hashed)
+    sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"])
     db.session.add(sql_temp)
     db.session.commit()
     return x
@@ -62,7 +64,7 @@ def loginValidation():
         user_credents.pop("_sa_instance_state")
         return jsonify(user_credents)
 
-    #! flask wtf does not work go kys :(
+    '''flask wtf does not work go kys :('''
     # print("var request", vars(request))
     # print("request files", request.files)
     # print("request form", request.form)
@@ -81,7 +83,10 @@ def loginValidation():
     #     login_user(user, remember=True)
     #     return "logged in"
     # return "log in again noob"
+    ''''''
     
 
+'''to-do list'''
 # create stock POST
 # add projects
+''''''

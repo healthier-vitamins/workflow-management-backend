@@ -32,7 +32,7 @@ class User_Accounts(db.Model):
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    password_hash = db.Column(db.String(35), nullable=False)
+    password_hash = db.Column(db.String(120), nullable=False)
     job_position = db.Column(db.String(35))
     current_workflow = db.Column(db.String(35))
     is_admin = db.Column(db.Boolean, default=False, unique=False)
