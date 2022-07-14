@@ -109,10 +109,18 @@ def deleteUser(user_id):
         return {"status": "Account not found"}
     #! eventually edit is_deleted instead
 
-
-
+@app_inner.route('/change-password/<user_id>', methods=['PUT'])
+def changePw(user_id):
+    x = request.get_json()
+    account_to_edit = User_Accounts.query.get(user_id)
+    account_to_edit.set_password(password=x['new_password_first'])
+    user_credents = vars(account_to_edit)
+    user_credents.pop("_sa_instance_state")
+    return user_credents
 
 '''to-do list'''
 # create stock POST
 # add projects
+# is_delete
+# pop hashed password from response
 ''''''
