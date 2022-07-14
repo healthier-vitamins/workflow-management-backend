@@ -1,11 +1,13 @@
 from app import app_inner, db
-from app.login_form import LoginForm
 # this only works because of __init__.py file, final line, import.
 from app.models import User_Accounts, Stock_List
 from flask import request, jsonify
 from flask_cors import cross_origin
-from flask_login import current_user, login_user
 
+#! flask-wtf sigh
+# from app.login_form import LoginForm
+# from flask_login import current_user, login_user
+# from werkzeug.datastructures import CombinedMultiDict
 
 @app_inner.route('/')
 def index():
@@ -49,29 +51,37 @@ def updateAcc(user_id):
 
 @app_inner.route('/login-user', methods=['POST'])
 def loginValidation():
+    #! throwaway code sigh
     x = request.get_json()
-    # logged_in = User_Accounts.query.filter_by(email=x['email'], password_hash=x['password']).first_or_404(description="Invalid user login")
+    logged_in = User_Accounts.query.filter_by(email=x['email'], password_hash=x['password']).first_or_404(description="Invalid user login")
+
+    if logged_in == "Invalid user login":
+        return {"is_logged_in": logged_in, "email": x['email']}
+    else:
+        user_credents = vars(logged_in)
+        user_credents.pop("_sa_instance_state")
+        return jsonify(user_credents)
+
+    #! flask wtf does not work go kys :(
+    # print("var request", vars(request))
+    # print("request files", request.files)
+    # print("request form", request.form)
 
     # this is not to store the data...
     # pass in logs for logging in from flask-wtforms
-    loginClass = LoginForm()
-    # print("LOGGGIINNNNNnnnnnngggg", vars(loginClass))
+    # form = LoginForm(CombinedMultiDict((request.get_data, request.form)))
 
-    if loginClass.validate_on_submit():
-        user = User_Accounts.query.filter_by(username=loginClass.email.data).first()
-        if user is None or not User_Accounts.check_password(loginClass.password.data):
-            return "login failed"
-        login_user(user, remember=True)
-        return "logged in"
-    return "log in again noob"
 
-    # if logged_in == "Invalid user login":
-    #     return {"is_logged_in": logged_in, "email": x['email']}
-    # else:
-    #     user_credents = vars(logged_in)
-    #     user_credents.pop("_sa_instance_state")
-    #     return jsonify(user_credents)
+    # if form.validate_on_submit():
+    #     user = User_Accounts.query.filter_by(email=form.email.data).first()
+    #     return "test"
+    #     if user is None or not x['password']:
+        # User_Accounts.check_password(x['password']):
+    #         return "login failed"
+    #     login_user(user, remember=True)
+    #     return "logged in"
+    # return "log in again noob"
+    
 
 # create stock POST
-
 # add projects
