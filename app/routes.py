@@ -13,7 +13,7 @@ from flask_cors import cross_origin
 def index():
     return "hello"
 
-@app_inner.route('/create-new-user', methods=['POST'])
+@app_inner.route('/sign-up', methods=['POST'])
 @cross_origin()
 def createNewUser():
 
