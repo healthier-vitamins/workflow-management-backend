@@ -6,9 +6,10 @@
 #! Base = declarative_base()
 ''''''
 
-from app import db, login
+from app import db
 # hashing of password
 from werkzeug.security import generate_password_hash, check_password_hash
+
 '''flask-wtf sign'''
 # allows methods/implementations for easier use
 #! from flask_login import UserMixin

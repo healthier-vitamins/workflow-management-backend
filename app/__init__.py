@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
+
 '''flask-wtf sigh'''
 #! from flask_login import LoginManager
 ''''''
+
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -12,6 +14,7 @@ app_inner = Flask(__name__)
 CORS(app_inner)
 # config urls, secret key, etc
 app_inner.config.from_object(Config)
+
 '''flask-login sigh'''
 # for login init
 #! login = LoginManager(app_inner)
