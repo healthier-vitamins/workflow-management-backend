@@ -1,8 +1,11 @@
-import json
 from app import app_inner, db
+from app.login_form import LoginForm
+# this only works because of __init__.py file, final line, import.
 from app.models import User_Accounts, Stock_List
 from flask import request, jsonify
 from flask_cors import cross_origin
+from flask_login import current_user, login_user
+
 
 @app_inner.route('/')
 def index():
@@ -47,6 +50,10 @@ def updateAcc(user_id):
 @app_inner.route('/login-user', methods=['POST'])
 def loginValidation():
     x = request.get_json()
+    loginClass = LoginForm()
+    
+
+
     logged_in = User_Accounts.query.filter_by(email=x['email'], password_hash=x['password']).first_or_404(description="Invalid user login")
     if logged_in == "Invalid user login":
         return {"is_logged_in": logged_in, "email": x['email']}

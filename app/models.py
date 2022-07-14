@@ -4,20 +4,39 @@
 # if a database is initialised, Base shall hold it
 # Base = declarative_base()
 
-from app import db
+from email.policy import default
+from app import db, login
+# hashing of password
+from werkzeug.security import generate_password_hash, check_password_hash
+# allows methods/implementations for easier use
+from flask_login import UserMixin
 
-class User_Accounts(db.Model):
+# to aid flask-login with navigating databases.
+# login initialised in __init__.py.
+# id passed through is string, therefore, casted.
+@login.user_loader
+def load_user(id):
+    return User_Accounts.query.get(int(id))
+
+# UserMixin adds, User_Accounts.is_authenticated/.is_active/.is_anonymous/.get_id
+class User_Accounts(UserMixin, db.Model):
     __tablename__ = "user_accounts"
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
     password_hash = db.Column(db.String(35), nullable=False)
     job_position = db.Column(db.String(35))
     current_workflow = db.Column(db.String(35))
     is_admin = db.Column(db.Boolean, default=False, unique=False)
     is_deleted = db.Column(db.Boolean, default=False, unique=False)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)    
 
     def __repr__(self):
         return f"User_Accounts(id={self.id!r}, email={self.email!r}, password_hash={self.password_hash!r}"
