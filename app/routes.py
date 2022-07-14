@@ -28,7 +28,8 @@ def createNewUser():
         db.session.add(sql_temp)
         db.session.commit()
         # print(sql_temp)
-        user_credents = vars(sql_temp)
+        logged_in = User_Accounts.query.filter_by(email=x['email']).first()
+        user_credents = vars(logged_in)
         user_credents.pop("_sa_instance_state")
         return jsonify(user_credents)
     except:
@@ -102,9 +103,9 @@ def deleteUser(user_id):
     if account_to_delete:
         db.session.delete(account_to_delete)
         db.session.commit()
-        return {"status": "deleted"}
+        return {"status": "Account deleted"}
     else:
-        return {"status": "acc not found"}
+        return {"status": "Account not found"}
     
 
 
