@@ -99,14 +99,15 @@ def loginValidation():
 
 @app_inner.route('/delete-user/<user_id>', methods=['DELETE'])
 def deleteUser(user_id):
-    account_to_delete = User_Accounts.query.get(user_id).first()
+    #! throwaway code
+    account_to_delete = User_Accounts.query.get(user_id)
     if account_to_delete:
         db.session.delete(account_to_delete)
         db.session.commit()
         return {"status": "Account deleted"}
     else:
         return {"status": "Account not found"}
-    
+    #! eventually edit is_deleted instead
 
 
 
