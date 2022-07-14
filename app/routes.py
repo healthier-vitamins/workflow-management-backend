@@ -53,7 +53,6 @@ def loginValidation():
     loginClass = LoginForm()
     
 
-
     logged_in = User_Accounts.query.filter_by(email=x['email'], password_hash=x['password']).first_or_404(description="Invalid user login")
     if logged_in == "Invalid user login":
         return {"is_logged_in": logged_in, "email": x['email']}
