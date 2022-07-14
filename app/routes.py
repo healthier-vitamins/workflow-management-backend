@@ -1,8 +1,7 @@
-import json
 from app import app_inner, db
 # this only works because of __init__.py file, final line, import.
 from app.models import User_Accounts, Stock_List
-from flask import request, jsonify
+from flask import request, jsonify, Response, json
 from flask_cors import cross_origin
 
 '''flask-wtf sigh'''
@@ -20,21 +19,21 @@ def index():
 def createNewUser():
     x = request.get_json()
 
-    # hash method lol
-    set = User_Accounts()
-    set.set_password(password=x['password'])
-
-    sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], password_hash=set.password_hash)
-    try:
+    is_taken = User_Accounts.query.filter_by(email=x['email']).first()
+    if is_taken:
+        return Response(json.dumps({"status": "Email taken"}), mimetype='application/json')
+    else:
+        set = User_Accounts()
+        set.set_password(password=x['password'])
+        sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], password_hash=set.password_hash)
         db.session.add(sql_temp)
         db.session.commit()
-        # print(sql_temp)
         logged_in = User_Accounts.query.filter_by(email=x['email']).first()
         user_credents = vars(logged_in)
         user_credents.pop("_sa_instance_state")
-        return jsonify(user_credents)
-    except:
-        return jsonify(status = "Email taken")
+        stringed = json.dumps(user_credents)
+        return Response(stringed, mimetype='application/json')
+
 
 @app_inner.route('/show-stock-list', methods=['GET'])
 def showStocks():
@@ -64,17 +63,20 @@ def updateAcc(user_id):
 def loginValidation():
     #! throwaway code sigh
     x = request.get_json()
-    logged_in = User_Accounts.query.filter_by(email=x['email']).first_or_404(description="Invalid email")
+    logged_in = User_Accounts.query.filter_by(email=x['email']).first()
 
-    if logged_in == "Invalid email":
-        return jsonify(error = logged_in)
+    if logged_in == None:
+        stringed = json.dumps({"error": "Invalid email"})
+        return Response(stringed, mimetype='application/json')
     else:
         if logged_in.check_password(password=x['password']):
             user_credents = vars(logged_in)
             user_credents.pop("_sa_instance_state")
-            return jsonify(user_credents)
+            stringed = json.dumps(user_credents)
+            return Response(stringed, mimetype='application/json')
         else:
-            return jsonify(error = "Invalid password")
+            stringed = json.dumps({"error": "Invalid password"})
+            return Response(stringed, mimetype='application/json')
 
 
     '''flask wtf does not work go kys :('''
@@ -105,9 +107,11 @@ def deleteUser(user_id):
     if account_to_delete:
         db.session.delete(account_to_delete)
         db.session.commit()
-        return jsonify(status="Account deleted")
+        stringed = json.dumps({"status": "Account deleted"})
+        return Response(stringed, mimetype='application/json')
     else:
-        return jsonify(status="Account not found")
+        stringed = json.dumps({"status": "Account not found"})
+        return Response(stringed, mimetype='application/json')
     #! eventually edit is_deleted instead
 
 @app_inner.route('/change-password/<user_id>', methods=['PUT'])
@@ -117,7 +121,8 @@ def changePw(user_id):
     account_to_edit.set_password(password=x['new_password_first'])
     user_credents = vars(account_to_edit)
     user_credents.pop("_sa_instance_state")
-    return jsonify(user_credents)
+    stringed = json.dumps(user_credents)
+    return Response(stringed, mimetype='application/json')
 
 
 '''to-do list'''
