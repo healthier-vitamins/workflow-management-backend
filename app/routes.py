@@ -118,11 +118,20 @@ def deleteUser(user_id):
 def changePw(user_id):
     x = request.get_json()
     account_to_edit = User_Accounts.query.get(user_id)
+    account_to_edit.password_hash = ""
     account_to_edit.set_password(password=x['new_password_first'])
-    user_credents = vars(account_to_edit)
+    db.session.commit()
+    # account_to_edit.set_password(password=x['new_password_first'])
+    # user_credents = vars(account_to_edit)
+    # user_credents.pop("_sa_instance_state")
+    # stringed = json.dumps(user_credents)
+    # return Response(stringed, mimetype='application/json')
+    q = User_Accounts.query.get(user_id)
+    user_credents = vars(q)
     user_credents.pop("_sa_instance_state")
     stringed = json.dumps(user_credents)
     return Response(stringed, mimetype='application/json')
+
 
 
 '''to-do list'''
