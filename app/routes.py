@@ -17,16 +17,17 @@ def index():
 @app_inner.route('/sign-up', methods=['POST'])
 @cross_origin()
 def createNewUser():
-
     x = request.get_json()
     # run hash method
     set = User_Accounts()
     set.set_password(password=x['password'])
 
-    sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"])
+    sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], password_hash=set['password_hash'])
     db.session.add(sql_temp)
     db.session.commit()
-    return x
+    user_credents = vars(sql_temp)
+    user_credents.pop("_sa_instance_state")
+    return jsonify(user_credents)
 
 @app_inner.route('/show-stock-list', methods=['GET'])
 def showStocks():
