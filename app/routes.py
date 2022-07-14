@@ -12,19 +12,21 @@ from flask_cors import cross_origin
 
 @app_inner.route('/')
 def index():
-    return "hello"
+    return "Welcome to <office> management"
 
-@app_inner.route('/sign-up', methods=['POST'])
 @cross_origin()
+@app_inner.route('/sign-up', methods=['POST'])
 def createNewUser():
     x = request.get_json()
-    # run hash method
+
+    # hash method lol
     set = User_Accounts()
     set.set_password(password=x['password'])
 
-    sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], password_hash=set['password_hash'])
+    sql_temp = User_Accounts(first_name=x["first_name"], last_name=x["last_name"], email=x["email"], password_hash=set.password_hash)
     db.session.add(sql_temp)
     db.session.commit()
+    print(sql_temp)
     user_credents = vars(sql_temp)
     user_credents.pop("_sa_instance_state")
     return jsonify(user_credents)
@@ -56,14 +58,18 @@ def updateAcc(user_id):
 def loginValidation():
     #! throwaway code sigh
     x = request.get_json()
-    logged_in = User_Accounts.query.filter_by(email=x['email'], password_hash=x['password']).first_or_404(description="Invalid user login")
+    logged_in = User_Accounts.query.filter_by(email=x['email']).first_or_404(description="Invalid email")
 
-    if logged_in == "Invalid user login":
-        return {"is_logged_in": logged_in, "email": x['email']}
+    if logged_in == "Invalid email":
+        return {"error": logged_in}
     else:
-        user_credents = vars(logged_in)
-        user_credents.pop("_sa_instance_state")
-        return jsonify(user_credents)
+        if logged_in.check_password(password=x['password']):
+            user_credents = vars(logged_in)
+            user_credents.pop("_sa_instance_state")
+            return jsonify(user_credents)
+        else:
+            return {"error": "Invalid password"}
+
 
     '''flask wtf does not work go kys :('''
     # print("var request", vars(request))

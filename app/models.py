@@ -25,7 +25,11 @@ from datetime import datetime
 #!     return User_Accounts.query.get(int(id))
 ''''''
 
+'''flask-wtf sign'''
 # UserMixin adds, User_Accounts.is_authenticated/.is_active/.is_anonymous/.get_id
+#! class User_Accounts(UserMixin, db.Model):
+''''''
+
 class User_Accounts(db.Model):
     __tablename__ = "user_accounts"
 
@@ -35,7 +39,7 @@ class User_Accounts(db.Model):
     email = db.Column(db.String(120), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
     job_position = db.Column(db.String(50))
-    current_workflow = db.Column(db.String(35))
+    current_workflow = db.Column(db.String(50))
     is_admin = db.Column(db.Boolean, default=False, unique=False)
     is_deleted = db.Column(db.Boolean, default=False, unique=False)
 
