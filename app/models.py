@@ -20,7 +20,7 @@ class User_Accounts(db.Model):
     is_deleted = db.Column(db.Boolean, default=False, unique=False)
 
     def __repr__(self):
-        return f"User_Accounts(id={self.id!r}, username={self.username!r}"
+        return f"User_Accounts(id={self.id!r}, email={self.email!r}, password_hash={self.password_hash!r}"
 
 class Stock_List(db.Model):
     __tablename__ = "stock_list"

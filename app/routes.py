@@ -1,3 +1,4 @@
+import json
 from app import app_inner, db
 from app.models import User_Accounts, Stock_List
 from flask import request, jsonify
@@ -43,4 +44,17 @@ def updateAcc(user_id):
     db.session.commit()
     return x
 
+@app_inner.route('/login-user', methods=['POST'])
+def loginValidation():
+    x = request.get_json()
+    logged_in = User_Accounts.query.filter_by(email=x['email'], password_hash=x['password']).first_or_404(description="Invalid user login")
+    if logged_in == "Invalid user login":
+        return {"is_logged_in": logged_in, "email": x['email']}
+    else:
+        user_credents = vars(logged_in)
+        user_credents.pop("_sa_instance_state")
+        return jsonify(user_credents)
 
+# create stock POST
+
+# add projects
