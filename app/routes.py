@@ -50,16 +50,27 @@ def updateAcc(user_id):
 @app_inner.route('/login-user', methods=['POST'])
 def loginValidation():
     x = request.get_json()
-    loginClass = LoginForm()
-    
+    # logged_in = User_Accounts.query.filter_by(email=x['email'], password_hash=x['password']).first_or_404(description="Invalid user login")
 
-    logged_in = User_Accounts.query.filter_by(email=x['email'], password_hash=x['password']).first_or_404(description="Invalid user login")
-    if logged_in == "Invalid user login":
-        return {"is_logged_in": logged_in, "email": x['email']}
-    else:
-        user_credents = vars(logged_in)
-        user_credents.pop("_sa_instance_state")
-        return jsonify(user_credents)
+    # this is not to store the data...
+    # pass in logs for logging in from flask-wtforms
+    loginClass = LoginForm()
+    # print("LOGGGIINNNNNnnnnnngggg", vars(loginClass))
+
+    if loginClass.validate_on_submit():
+        user = User_Accounts.query.filter_by(username=loginClass.email.data).first()
+        if user is None or not User_Accounts.check_password(loginClass.password.data):
+            return "login failed"
+        login_user(user, remember=True)
+        return "logged in"
+    return "log in again noob"
+
+    # if logged_in == "Invalid user login":
+    #     return {"is_logged_in": logged_in, "email": x['email']}
+    # else:
+    #     user_credents = vars(logged_in)
+    #     user_credents.pop("_sa_instance_state")
+    #     return jsonify(user_credents)
 
 # create stock POST
 
