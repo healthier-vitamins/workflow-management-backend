@@ -1,3 +1,4 @@
+import json
 from app import app_inner, db
 # this only works because of __init__.py file, final line, import.
 from app.models import User_Accounts, Stock_List
@@ -33,7 +34,7 @@ def createNewUser():
         user_credents.pop("_sa_instance_state")
         return jsonify(user_credents)
     except:
-        return {"status": "Email taken"}
+        return jsonify(status = "Email taken")
 
 @app_inner.route('/show-stock-list', methods=['GET'])
 def showStocks():
@@ -66,14 +67,14 @@ def loginValidation():
     logged_in = User_Accounts.query.filter_by(email=x['email']).first_or_404(description="Invalid email")
 
     if logged_in == "Invalid email":
-        return {"error": logged_in}
+        return jsonify(error = logged_in)
     else:
         if logged_in.check_password(password=x['password']):
             user_credents = vars(logged_in)
             user_credents.pop("_sa_instance_state")
             return jsonify(user_credents)
         else:
-            return {"error": "Invalid password"}
+            return jsonify(error = "Invalid password")
 
 
     '''flask wtf does not work go kys :('''
@@ -104,9 +105,9 @@ def deleteUser(user_id):
     if account_to_delete:
         db.session.delete(account_to_delete)
         db.session.commit()
-        return {"status": "Account deleted"}
+        return jsonify(status="Account deleted")
     else:
-        return {"status": "Account not found"}
+        return jsonify(status="Account not found")
     #! eventually edit is_deleted instead
 
 @app_inner.route('/change-password/<user_id>', methods=['PUT'])
@@ -116,7 +117,8 @@ def changePw(user_id):
     account_to_edit.set_password(password=x['new_password_first'])
     user_credents = vars(account_to_edit)
     user_credents.pop("_sa_instance_state")
-    return user_credents
+    return jsonify(user_credents)
+
 
 '''to-do list'''
 # create stock POST
