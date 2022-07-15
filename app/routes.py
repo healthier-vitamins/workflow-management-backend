@@ -146,6 +146,16 @@ def createProj():
         p_arr.append(p_dict)
     return jsonify(p_arr)
 
+@app_inner.route('/check-password/<user_id>', methods=['POST'])
+def checkPw(user_id):
+    x = request.get_json()
+    user = User_Accounts.query.get(user_id)
+    if user.check_password(password = x['old_password']):
+        return {"status": "Pass"}
+    else:
+        return {"error": "Fail"}
+
+
 '''to-do list'''
 # create stock POST
 # add projects
