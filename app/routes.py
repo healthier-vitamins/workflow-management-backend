@@ -1,6 +1,6 @@
 from app import app_inner, db
 # this only works because of __init__.py file, final line, import.
-from app.models import User_Accounts, Stock_List
+from app.models import User_Accounts, Stock_List, Projects
 from flask import request, jsonify, Response, json
 from flask_cors import cross_origin
 
@@ -132,7 +132,19 @@ def changePw(user_id):
     stringed = json.dumps(user_credents)
     return Response(stringed, mimetype='application/json')
 
-
+@app_inner.route('/create-project', methods = ['POST'])
+def createProj():
+    x = request.get_json()
+    project = Projects(services_required = x['services_required'], customer_company = x['customer_company'], customer_poc_name = x['customer_poc_name'])
+    db.session.add(project)
+    db.session.commit()
+    all_projects = Projects.query.all()
+    p_arr = []
+    for proj in all_projects:
+        p_dict = vars(proj)
+        p_dict.pop("_sa_instance_state")
+        p_arr.append(p_dict)
+    return jsonify(p_arr)
 
 '''to-do list'''
 # create stock POST
