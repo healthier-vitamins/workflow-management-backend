@@ -6,6 +6,7 @@
 #! Base = declarative_base()
 ''''''
 
+from sqlalchemy import ARRAY
 from app import db
 # hashing of password
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -69,7 +70,7 @@ class Projects(db.Model):
     __tablename__ = "projects"
 
     id = db.Column(db.Integer, primary_key=True)
-    stocks_id = db.Column(db.Integer, db.ForeignKey('stock_list.id'))
+    stocks_id = db.Column(ARRAY(db.Integer, db.ForeignKey('stock_list.id')))
     services_required = db.Column(db.String(50), default="start")
     customer_company = db.Column(db.String(50))
     customer_poc_name = db.Column(db.String(50))
