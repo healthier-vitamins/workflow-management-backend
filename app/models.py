@@ -60,7 +60,7 @@ class Stock_List(db.Model):
     item = db.Column(db.String(70), unique=False)
     quantity = db.Column(db.Integer, default=0, unique=False)
     # lazy defines how database queries for the relationship
-    project = db.relationship('Projects', backref='project_stocks', lazy='dynamic')
+    # project = db.relationship('Projects', backref='project_stocks', lazy='dynamic')
 
     def __repr__(self):
         return f"Stock_List(id={self.id!r}, item={self.item!r}"
@@ -70,7 +70,8 @@ class Projects(db.Model):
     __tablename__ = "projects"
 
     id = db.Column(db.Integer, primary_key=True)
-    stocks_id = db.Column(ARRAY(db.Integer, db.ForeignKey('stock_list.id')))
+    # stocks_id = db.Column(ARRAY(db.Integer, db.ForeignKey('stock_list.id')))
+    stocks_id = db.Column(ARRAY(db.Integer))
     services_required = db.Column(db.String(50), default="start")
     customer_company = db.Column(db.String(50))
     customer_poc_name = db.Column(db.String(50))
