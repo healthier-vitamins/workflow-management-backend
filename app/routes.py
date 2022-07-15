@@ -151,9 +151,11 @@ def checkPw(user_id):
     x = request.get_json()
     user = User_Accounts.query.get(user_id)
     if user.check_password(password = x['old_password']):
-        return {"status": "Pass"}
+        stringed = json.dumps({"status": "'Pass"})
+        return Response(stringed, mimetype='application/json')
     else:
-        return {"error": "Fail"}
+        stringed = json.dumps({"error": "'Fail"})
+        return Response(stringed, mimetype='application/json')
 
 
 '''to-do list'''
