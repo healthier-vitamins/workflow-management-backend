@@ -35,7 +35,7 @@ def createNewUser():
         return Response(stringed, mimetype='application/json')
 
 
-@app_inner.route('/show-stock-list', methods=['GET'])
+@app_inner.route('/stock-list', methods=['GET'])
 def showStocks():
     stocks = Stock_List.query.all()
     stocks_arr = []
