@@ -6,7 +6,7 @@
 #! Base = declarative_base()
 ''''''
 
-from sqlalchemy import ARRAY
+
 from app import db
 # hashing of password
 from werkzeug.security import generate_password_hash, check_password_hash
